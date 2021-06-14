@@ -28,8 +28,8 @@ router.post(
     }
 
     const passwordMatch = await Password.compareHash(
-      existingUser.password,
-      password
+      password,
+      existingUser?.password
     );
 
     if (!passwordMatch) {
