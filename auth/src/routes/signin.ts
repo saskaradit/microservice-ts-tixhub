@@ -12,11 +12,11 @@ router.post(
   '/api/users/signin',
   [
     // body('email').isEmail().withMessage('Email must be valid'),
-    body('password').trim().notEmpty().withMessage('You must input a password'),
     body('username')
       .trim()
       .isLength({ min: 4, max: 20 })
       .withMessage('Username must be valid'),
+    body('password').trim().notEmpty().withMessage('You must input a password'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
