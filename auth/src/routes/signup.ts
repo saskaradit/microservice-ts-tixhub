@@ -1,12 +1,10 @@
-import express, { Request, Response } from 'express';
-import { User } from '../models/user';
-import { body } from 'express-validator';
-import jwt from 'jsonwebtoken';
+import express, { Request, Response } from 'express'
+import { User } from '../models/user'
+import { body } from 'express-validator'
+import jwt from 'jsonwebtoken'
+import { BadRequestError, validateRequest } from '@rad-sas/common'
 
-import { validateRequest } from '../middlewares/validate-request';
-import { BadRequestError } from '../errors/bad-request-errors';
-
-const router = express.Router();
+const router = express.Router()
 
 router.post(
   '/api/users/signup',
@@ -23,20 +21,20 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { email, username, password } = req.body;
+    const { email, username, password } = req.body
 
-    let existingUser = await User.findOne({ email });
+    let existingUser = await User.findOne({ email })
     if (existingUser) {
-      throw new BadRequestError('Email already used');
+      throw new BadRequestError('Email already used')
     } else {
-      existingUser = await User.findOne({ username });
+      existingUser = await User.findOne({ username })
       if (existingUser) {
-        throw new BadRequestError('Username already used');
+        throw new BadRequestError('Username already used')
       }
     }
 
-    const user = User.build({ username, email, password });
-    await user.save();
+    const user = User.build({ username, email, password })
+    await user.save()
 
     // Generate JWT
     const userJwt = jwt.sign(
@@ -45,15 +43,15 @@ router.post(
         username: user.username,
       },
       process.env.JWT_KEY!
-    );
+    )
 
     // Store on session
     req.session = {
       jwt: userJwt,
-    };
+    }
 
-    res.status(201).send(user);
+    res.status(201).send(user)
   }
-);
+)
 
-export { router as signUpRouter };
+export { router as signUpRouter }

@@ -1,12 +1,11 @@
-import express, { Request, Response } from 'express';
-import { body } from 'express-validator';
-import { validateRequest } from '../middlewares/validate-request';
-import { BadRequestError } from '../errors/bad-request-errors';
-import { User } from '../models/user';
-import { Password } from '../services/password';
-import jwt from 'jsonwebtoken';
+import express, { Request, Response } from 'express'
+import { body } from 'express-validator'
+import { BadRequestError, validateRequest } from '@rad-sas/common'
+import { User } from '../models/user'
+import { Password } from '../services/password'
+import jwt from 'jsonwebtoken'
 
-const router = express.Router();
+const router = express.Router()
 
 router.post(
   '/api/users/signin',
@@ -20,20 +19,20 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { username, password } = req.body;
+    const { username, password } = req.body
 
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ username })
     if (!existingUser) {
-      throw new BadRequestError('Invalid Credentials');
+      throw new BadRequestError('Invalid Credentials')
     }
 
     const passwordMatch = await Password.compareHash(
       password,
       existingUser?.password
-    );
+    )
 
     if (!passwordMatch) {
-      throw new BadRequestError('Invalid Credentials');
+      throw new BadRequestError('Invalid Credentials')
     }
     // Generate JWT
     const userJwt = jwt.sign(
@@ -42,15 +41,15 @@ router.post(
         username: existingUser.username,
       },
       process.env.JWT_KEY!
-    );
+    )
 
     // Store on session
     req.session = {
       jwt: userJwt,
-    };
+    }
 
-    res.status(200).send(existingUser);
+    res.status(200).send(existingUser)
   }
-);
+)
 
-export { router as signInRouter };
+export { router as signInRouter }
