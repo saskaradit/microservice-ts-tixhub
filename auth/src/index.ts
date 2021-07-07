@@ -1,25 +1,28 @@
-import mongoose from 'mongoose';
-import { app } from './app';
+import mongoose from 'mongoose'
+import { app } from './app'
 
 const init = async () => {
   if (!process.env.JWT_KEY) {
-    throw new Error('JWT must be defined');
+    throw new Error('JWT must be defined')
+  }
+  if (!process.env.MONGO_URI) {
+    throw new Error('MONGO_URI must be defined')
   }
 
   try {
-    await mongoose.connect('mongodb://auth-mongo-srv:27017/auth', {
+    await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
-    });
-    console.log('Connected');
+    })
+    console.log('Connected')
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
 
-  app.listen(3000, () => console.log('---AUTH---,Listening on port 3000'));
-};
+  app.listen(3000, () => console.log('---AUTH---,Listening on port 3000'))
+}
 
-init();
+init()
 
 // kubectl create secret generic jwt-secret --from-literal=JWT_KEY=radrad
