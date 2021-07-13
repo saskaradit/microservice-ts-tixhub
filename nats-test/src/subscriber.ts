@@ -13,13 +13,13 @@ stan.on('connect', () => {
     process.exit()
   })
 
-  const options = stan.subscriptionOptions().setManualAckMode(true)
+  const options = stan
+    .subscriptionOptions()
+    .setManualAckMode(true)
+    .setDeliverAllAvailable()
+    .setDurableName('orders-service')
 
-  const subscription = stan.subscribe(
-    'ticket:created',
-    'orders-service-queue-group',
-    options
-  )
+  const subscription = stan.subscribe('ticket:created', 'orders-queue', options)
 
   subscription.on('message', (msg: Message) => {
     const data = msg.getData()
