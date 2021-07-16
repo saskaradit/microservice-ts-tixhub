@@ -12,7 +12,7 @@ stan.on('connect', async () => {
     await publisher.publish({
       id: '123',
       title: 'Jengjet',
-      price: '9090',
+      price: 9090,
     })
   } catch (error) {
     console.error(error)
