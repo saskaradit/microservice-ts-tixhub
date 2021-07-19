@@ -13,3 +13,16 @@ Node for the back
 2. Enable Kubernetes Cluster
 
 3. Run the command `skaffold dev`
+
+Rads to do:
+
+- Live Projects
+- System Design Documents
+- Architectural/System Design Diagrams
+- UX/UI (in case of frontend)
+- Papers
+- Books
+- Blog articles
+- Videos
+- Podcast
+- Summary
