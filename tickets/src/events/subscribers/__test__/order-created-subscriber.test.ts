@@ -1,4 +1,4 @@
-import { OrderCreatedListener } from '../order-created-subscriber'
+import { OrderCreatedSubscriber } from '../order-created-subscriber'
 import { natsWrapper } from '../../../nats-wrapper'
 import { Ticket } from '../../../models/tickets'
 import { OrderCreatedEvent, OrderStatus } from '@rad-sas/common'
@@ -7,7 +7,7 @@ import { Message } from 'node-nats-streaming'
 
 const setup = async () => {
   // Create instance of listener
-  const listener = new OrderCreatedListener(natsWrapper.client)
+  const listener = new OrderCreatedSubscriber(natsWrapper.client)
 
   // create and save a ticket
   const ticket = Ticket.build({
