@@ -47,7 +47,7 @@ const init = async () => {
     console.error(error)
   }
 
-  app.listen(3000, () => console.log('---AUTH---,Listening on port 3000'))
+  app.listen(3000, () => console.log('---ORDERS---,Listening on port 3000'))
 }
 
 init()
