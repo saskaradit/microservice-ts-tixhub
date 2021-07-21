@@ -1,4 +1,5 @@
 import { natsWrapper } from './nats-wrapper'
+import { OrderCreatedSubscriber } from './events/subscribers/order-created-subscriber'
 
 const init = async () => {
   if (!process.env.NATS_CLIENT_ID) {
@@ -21,8 +22,12 @@ const init = async () => {
       console.log('NATS connection closed')
       process.exit()
     })
+
     process.on('SIGINT', () => natsWrapper.client.close())
     process.on('SIGTERM', () => natsWrapper.client.close())
+
+    new OrderCreatedSubscriber(natsWrapper.client).listen()
+
     console.log('Connected')
   } catch (error) {
     console.error(error)
