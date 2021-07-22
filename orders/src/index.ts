@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 import { app } from './app'
 import { natsWrapper } from './nats-wrapper'
-import { TicketCreatedSubscriber } from './events/subcribers/ticket-created-subscriber'
-import { TicketUpdatedSubscriber } from './events/subcribers/ticket-updated-subscriber'
+import { TicketCreatedSubscriber } from './events/subscribers/ticket-created-subscriber'
+import { TicketUpdatedSubscriber } from './events/subscribers/ticket-updated-subscriber'
 
 const init = async () => {
   if (!process.env.JWT_KEY) {
