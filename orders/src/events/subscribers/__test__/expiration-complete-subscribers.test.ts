@@ -22,7 +22,7 @@ const setup = async () => {
     expiresAt: new Date(),
     ticket,
   })
-  await order.save
+  await order.save()
 
   const data: ExpirationCompleteEvent['data'] = {
     orderId: order.id,
@@ -36,6 +36,27 @@ const setup = async () => {
   return { listener, order, ticket, data, msg }
 }
 
-it('updates the order to cancelled', async () => {})
-it('emits an orderCancelled Event', async () => {})
-it('acks the message', async () => {})
+it('updates the order to cancelled', async () => {
+  const { listener, order, data, msg } = await setup()
+  await listener.onMessage(data, msg)
+
+  const updatedOrder = await Order.findById(order.id)
+  expect(updatedOrder!.status).toEqual(OrderStatus.Cancelled)
+})
+
+it('emits an orderCancelled Event', async () => {
+  const { listener, order, data, msg } = await setup()
+  await listener.onMessage(data, msg)
+
+  const eventData = JSON.parse(
+    (natsWrapper.client.publish as jest.Mock).mock.calls[0][1]
+  )
+  expect(eventData.id).toEqual(order.id)
+})
+
+it('acks the message', async () => {
+  const { listener, data, msg } = await setup()
+  await listener.onMessage(data, msg)
+
+  expect(msg.ack).toHaveBeenCalled()
+})

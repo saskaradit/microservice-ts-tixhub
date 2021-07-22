@@ -3,6 +3,7 @@ import { app } from './app'
 import { natsWrapper } from './nats-wrapper'
 import { TicketCreatedSubscriber } from './events/subscribers/ticket-created-subscriber'
 import { TicketUpdatedSubscriber } from './events/subscribers/ticket-updated-subscriber'
+import { ExpirationCompleteSubscriber } from './events/subscribers/expiration-complete-subscriber'
 
 const init = async () => {
   if (!process.env.JWT_KEY) {
@@ -35,6 +36,7 @@ const init = async () => {
     process.on('SIGTERM', () => natsWrapper.client.close())
 
     new TicketCreatedSubscriber(natsWrapper.client).listen()
+    new ExpirationCompleteSubscriber(natsWrapper.client).listen()
     new TicketUpdatedSubscriber(natsWrapper.client).listen()
 
     await mongoose.connect(process.env.MONGO_URI, {
