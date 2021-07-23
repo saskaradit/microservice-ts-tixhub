@@ -3,6 +3,7 @@ import 'express-async-errors'
 import { json } from 'body-parser'
 import cookieSession from 'cookie-session'
 import { RouteError, errorHandler, currentUser } from '@rad-sas/common'
+import { createCharge } from './routes/create'
 
 const app = express()
 app.set('trust proxy', true)
@@ -14,6 +15,7 @@ app.use(
   })
 )
 app.use(currentUser)
+app.use(createCharge)
 
 app.all('*', async (req, res) => {
   throw new RouteError()
@@ -22,3 +24,6 @@ app.all('*', async (req, res) => {
 app.use(errorHandler)
 
 export { app }
+
+// CREATE STRIPE KEY WITH SECRETS
+// kubectl create secret generic stripe-secret --from-literal STRIP_KEY=hehe
