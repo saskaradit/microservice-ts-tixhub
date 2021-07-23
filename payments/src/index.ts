@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 import { app } from './app'
+import { OrderCancelledSubscriber } from './events/subscribers/order-cancelled-subscriber'
+import { OrderCreatedSubscriber } from './events/subscribers/order-created-subscriber'
 import { natsWrapper } from './nats-wrapper'
 
 const init = async () => {
@@ -31,6 +33,9 @@ const init = async () => {
     })
     process.on('SIGINT', () => natsWrapper.client.close())
     process.on('SIGTERM', () => natsWrapper.client.close())
+
+    new OrderCancelledSubscriber(natsWrapper.client).listen()
+    new OrderCreatedSubscriber(natsWrapper.client).listen()
 
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
