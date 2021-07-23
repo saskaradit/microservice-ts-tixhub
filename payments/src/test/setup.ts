@@ -5,11 +5,7 @@ import request from 'supertest'
 import jwt from 'jsonwebtoken'
 
 declare global {
-  namespace NodeJS {
-    interface Global {
-      signin(): string[]
-    }
-  }
+  var signin: (id?: string) => string[]
 }
 
 jest.mock('../nats-wrapper')
