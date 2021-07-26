@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import useRequest from '../../hooks/use-request'
-import router from 'next/router'
+import Router from 'next/router'
 
 const NewTicket = () => {
   const [title, setTitle] = useState('')
@@ -12,11 +12,11 @@ const NewTicket = () => {
       title,
       price,
     },
-    onSuccess: (ticket) => Router.push('/'),
+    onSuccess: () => Router.push('/'),
   })
 
-  const onSubmit = (e) => {
-    e.preventDefault()
+  const onSubmit = (event) => {
+    event.preventDefault()
 
     doRequest()
   }

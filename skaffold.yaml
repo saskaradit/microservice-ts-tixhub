@@ -16,6 +16,14 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: saskarad/tix-client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '**/*.js'
+            dest: .
     - image: saskarad/tix-tickets
       context: tickets
       docker:
@@ -47,12 +55,4 @@ build:
       sync:
         manual:
           - src: 'src/**/*.ts'
-            dest: .
-    - image: saskarad/tix-client
-      context: client
-      docker:
-        dockerfile: Dockerfile
-      sync:
-        manual:
-          - src: '**/*.js'
             dest: .
