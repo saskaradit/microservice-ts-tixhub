@@ -15,14 +15,16 @@ router.post(
     body('price')
       .isFloat({ gt: 0 })
       .withMessage('Price must be greater than 0'),
+    body('image').not().isEmpty().withMessage('Please input a mesasge'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { title, price } = req.body
+    const { title, price, image } = req.body
 
     const ticket = Ticket.build({
       title,
       price,
+      image,
       userId: req.currentUser!.id,
     })
     await ticket.save()
@@ -30,6 +32,7 @@ router.post(
       id: ticket.id,
       title: ticket.title,
       price: ticket.price,
+      image: ticket.image,
       userId: ticket.userId,
       version: ticket.version,
     })

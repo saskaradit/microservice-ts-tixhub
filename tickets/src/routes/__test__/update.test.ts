@@ -12,6 +12,8 @@ it('returns a 404 if the provided id does not exist', async () => {
     .send({
       title: 'hehe',
       price: 2021,
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
     .expect(404)
 })
@@ -24,6 +26,8 @@ it('returns a 404 if the user is not authenticated', async () => {
     .send({
       title: 'hehe',
       price: 2021,
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
     .expect(404)
 })
@@ -35,6 +39,8 @@ it('returns a 404 if the user does not own the ticket', async () => {
     .send({
       title: 'hehe',
       price: 2021,
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
 
   await request(app)
@@ -55,12 +61,16 @@ it('returns a 400 if the user provieds an invalid title or price', async () => {
     .send({
       title: 'hehe',
       price: 2021,
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
   await request(app)
     .put(`/api/tickets/${response.body.id}`)
     .set('Cookie', cookie)
     .send({
       price: 2021,
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
     .expect(400)
   await request(app)
@@ -68,6 +78,8 @@ it('returns a 400 if the user provieds an invalid title or price', async () => {
     .set('Cookie', cookie)
     .send({
       title: 'jengjet',
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
     .expect(400)
 })
@@ -80,6 +92,8 @@ it('updates the ticket provided', async () => {
     .send({
       title: 'hehe',
       price: 2021,
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
   await request(app)
     .put(`/api/tickets/${response.body.id}`)
@@ -87,6 +101,8 @@ it('updates the ticket provided', async () => {
     .send({
       title: 'jengjet',
       price: 2021,
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
     .expect(200)
 
@@ -106,6 +122,8 @@ it('publishes an event', async () => {
     .send({
       title: 'hehe',
       price: 2021,
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
   await request(app)
     .put(`/api/tickets/${response.body.id}`)
@@ -113,6 +131,8 @@ it('publishes an event', async () => {
     .send({
       title: 'jengjet',
       price: 2021,
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
     .expect(200)
 
@@ -127,6 +147,8 @@ it('it rejects a reserved ticket', async () => {
     .send({
       title: 'hehe',
       price: 2021,
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
 
   const ticket = await Ticket.findById(response.body.id)
@@ -139,6 +161,8 @@ it('it rejects a reserved ticket', async () => {
     .send({
       title: 'jengjet',
       price: 2021,
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
     .expect(400)
 })

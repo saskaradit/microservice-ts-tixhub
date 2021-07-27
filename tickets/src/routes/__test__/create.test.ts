@@ -29,6 +29,8 @@ it('return an error if an invalid title is provided', async () => {
     .send({
       title: '',
       price: 20,
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
     .expect(400)
 
@@ -47,6 +49,8 @@ it('return an error if an invalid price is provided', async () => {
     .send({
       title: 'hehe',
       price: -2,
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
     .expect(400)
   await request(app)
@@ -69,6 +73,8 @@ it('creates a ticket with valid inputs', async () => {
     .send({
       title: 'Hehe',
       price: 9090,
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
     .expect(201)
 
@@ -85,6 +91,8 @@ it('publishes an event', async () => {
     .send({
       title: 'Hehe',
       price: 9090,
+      image:
+        'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     })
     .expect(201)
 

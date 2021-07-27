@@ -40,6 +40,7 @@ router.put(
     ticket.set({
       title: req.body.title,
       price: req.body.price,
+      image: req.body.image,
     })
     await ticket.save()
     new TicketUpdatedPublisher(natsWrapper.client).publish({
