@@ -48,6 +48,7 @@ router.put(
       title: ticket.title,
       price: ticket.price,
       userId: ticket.userId,
+      image: ticket.image,
       version: ticket.version,
     })
 

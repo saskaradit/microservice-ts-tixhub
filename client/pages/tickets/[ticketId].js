@@ -14,6 +14,7 @@ const TicketShow = ({ ticket }) => {
 
   return (
     <div>
+      <img src={ticket.image} alt='' className='card-img-top' />
       <h1>{ticket.title}</h1>
       <h4>Price: {ticket.price}</h4>
       {errors}

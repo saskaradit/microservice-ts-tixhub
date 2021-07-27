@@ -16,7 +16,9 @@ const OrderShow = ({ order, currentUser }) => {
 
   useEffect(() => {
     const findTimeLeft = () => {
-      const minuteLeft = (new Date(order.expiresAt) - new Date()) / 1000 / 60
+      const minuteLeft = Math.round(
+        (new Date(order.expiresAt) - new Date()) / 1000 / 60
+      )
       setTimeleft(minuteLeft)
     }
 
