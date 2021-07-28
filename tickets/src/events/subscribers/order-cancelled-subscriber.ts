@@ -22,7 +22,7 @@ export class OrderCancelledSubscriber extends Listener<OrderCancelledEvent> {
       userId: ticket.userId,
       price: ticket.price,
       title: ticket.title,
-      image: ticket.image,
+      schedule: ticket.schedule,
       version: ticket.version,
     })
     msg.ack()
