@@ -7,6 +7,7 @@ const NewTicket = () => {
   const [desc, setDesc] = useState('')
   const [price, setPrice] = useState('')
   const [image, setImage] = useState('')
+  const [schedule, setSchedule] = useState(new Date())
   const { doRequest, errors } = useRequest({
     url: '/api/tickets',
     method: 'post',
@@ -14,6 +15,7 @@ const NewTicket = () => {
       title,
       price,
       desc,
+      schedule,
       image,
     },
     onSuccess: () => Router.push('/'),
@@ -55,6 +57,16 @@ const NewTicket = () => {
             type='text'
             value={desc}
             onChange={(e) => setDesc(e.target.value)}
+          />
+        </div>
+        <div className='form-group'>
+          <label>Date</label>
+          <input
+            type='datetime-local'
+            name=''
+            id=''
+            value={schedule}
+            onChange={(e) => setSchedule(e.target.value)}
           />
         </div>
         <div className='form-group'>
