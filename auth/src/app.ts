@@ -8,6 +8,7 @@ import { signInRouter } from './routes/signin'
 import { signUpRouter } from './routes/signup'
 import { signOutRouter } from './routes/signout'
 import { RouteError, errorHandler } from '@rad-sas/common'
+import { updateUserRouter } from './routes/update'
 
 const app = express()
 app.set('trust proxy', true)
@@ -23,6 +24,7 @@ app.use(currentUserRouter)
 app.use(signInRouter)
 app.use(signOutRouter)
 app.use(signUpRouter)
+app.use(updateUserRouter)
 
 app.all('*', async (req, res) => {
   throw new RouteError()

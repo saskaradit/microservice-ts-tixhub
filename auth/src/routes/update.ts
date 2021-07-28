@@ -4,9 +4,14 @@ import { User } from '../models/user'
 
 const router = express.Router()
 
-router.get('/api/users/currentuser', currentUser, async (req, res) => {
+router.put('/api/users/edit', currentUser, async (req, res) => {
   const user = await User.findById(req.currentUser!.id)
+
+  user!.set({
+    email: req.body.email,
+  })
+  await user!.save()
   res.send({ currentUser: user || null })
 })
 
-export { router as currentUserRouter }
+export { router as updateUserRouter }

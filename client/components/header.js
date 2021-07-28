@@ -5,6 +5,7 @@ const Header = ({ currentUser }) => {
     !currentUser && { label: 'Sign Up', href: '/auth/signup' },
     !currentUser && { label: 'Sign In', href: '/auth/signin' },
     currentUser && { label: 'Sell Tickets', href: '/tickets/new' },
+    currentUser && { label: 'Profile', href: '/user/profile' },
     currentUser && { label: 'My Orders', href: '/orders' },
     currentUser && { label: 'Sign Out', href: '/auth/signout' },
   ]
@@ -13,7 +14,7 @@ const Header = ({ currentUser }) => {
       return (
         <li key={href} className='nav-item'>
           <Link href={href}>
-            <a className='navbar-link'>{label}</a>
+            <a className='nav-link'>{label}</a>
           </Link>
         </li>
       )

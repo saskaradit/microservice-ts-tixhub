@@ -1,4 +1,5 @@
 const OrderIndex = ({ orders }) => {
+  orders.reverse()
   return (
     <ul>
       {orders.map((order) => {
