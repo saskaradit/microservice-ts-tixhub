@@ -13,8 +13,6 @@ const setup = async () => {
     id: new mongoose.Types.ObjectId().toHexString(),
     title: 'hehe',
     price: 20,
-    image:
-      'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
   })
   await ticket.save()
 
@@ -24,6 +22,8 @@ const setup = async () => {
     version: ticket.version + 1,
     title: 'new hehe',
     price: 999,
+    image:
+      'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
     userId: 'radrad',
   }
   // create a fake msg object
