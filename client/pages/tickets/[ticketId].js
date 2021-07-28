@@ -16,6 +16,7 @@ const TicketShow = ({ ticket }) => {
     <div>
       <img src={ticket.image} alt='' className='card-img-top' />
       <h1>{ticket.title}</h1>
+      <p>{ticket.desc}</p>
       <h4>Price: {ticket.price}</h4>
       {errors}
       <button onClick={() => doRequest()} className='btn btn-primary'>
