@@ -40,6 +40,7 @@ router.put(
     ticket.set({
       title: req.body.title,
       price: req.body.price,
+      desc: req.body.desc,
       image: req.body.image,
     })
     await ticket.save()

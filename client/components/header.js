@@ -13,15 +13,15 @@ const Header = ({ currentUser }) => {
     .map(({ label, href }) => {
       return (
         <li key={href} className='nav-item'>
-          <Link href={href}>
-            <a className='nav-link'>{label}</a>
+          <Link href={href} className='nav-link'>
+            <a className='nav-link text-dark'>{label}</a>
           </Link>
         </li>
       )
     })
 
   return (
-    <nav className='navbar navbar-light bg-light'>
+    <nav className='navbar navbar-light bg-light mb-5'>
       <div className='container'>
         <Link href='/'>
           <a className='navbar-brand'>TixHub</a>
