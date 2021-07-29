@@ -1,7 +1,8 @@
 import Router from 'next/router'
 import useRequest from '../../hooks/use-request'
+import Link from 'next/link'
 
-const TicketShow = ({ ticket }) => {
+const TicketShow = ({ ticket, currentUser }) => {
   const { doRequest, errors } = useRequest({
     url: `/api/orders`,
     method: 'post',
@@ -12,6 +13,31 @@ const TicketShow = ({ ticket }) => {
       Router.push('/orders/[orderId]', `/orders/${order.id}`),
   })
 
+  const getActions = () => {
+    if (!currentUser) {
+      return (
+        <Link href='/auth/signup'>
+          <button className='btn btn-primary'>Sign Up</button>
+        </Link>
+      )
+    } else if (ticket.userId == currentUser.id) {
+      return (
+        <Link
+          href='/tickets/update/[ticketId]'
+          as={`/tickets/update/${ticket.id}`}
+        >
+          <button className='btn btn-primary'>Edit</button>
+        </Link>
+      )
+    } else if (currentUser) {
+      return (
+        <button onClick={() => doRequest()} className='btn btn-primary'>
+          Purchase
+        </button>
+      )
+    }
+  }
+
   return (
     <div>
       <img src={ticket.image} alt='' className='card-img-top' />
@@ -20,14 +46,12 @@ const TicketShow = ({ ticket }) => {
       <p>{ticket.desc}</p>
       <p>Price: {ticket.price}</p>
       {errors}
-      <button onClick={() => doRequest()} className='btn btn-primary'>
-        Purchase
-      </button>
+      <div>{getActions()}</div>
     </div>
   )
 }
 
-TicketShow.getInitialProps = async (context, client) => {
+TicketShow.getInitialProps = async (context, client, currentUser) => {
   const { ticketId } = context.query
   const { data } = await client.get(`api/tickets/${ticketId}`)
 
