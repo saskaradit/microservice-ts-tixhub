@@ -1,4 +1,3 @@
-import { async } from 'q'
 import request from 'supertest'
 import { app } from '../../app'
 import { Order } from '../../models/order'
