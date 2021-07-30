@@ -1,12 +1,18 @@
-## **Tixhub Microservices**
 
-A ticketing application using microservice architecture
+#  **Tixhub Microservices**
 
-React for the front
 
-Node for the back
+A ticketing web application using microservices architecture approach
 
-## _How to run_
+React for the front  and Node for the back deployed on a kubernetes  clusters
+
+##  Prerequisites
+  - You need to  have docker installed
+  - You need to enable kubernetes for docker
+  - Make sure you have already setup your skaffold, you can install it here: 			https://skaffold.dev/docs/install/
+
+
+##  How to run
 
 1. Make sure you have docker running
 
@@ -14,15 +20,9 @@ Node for the back
 
 3. Run the command `skaffold dev`
 
-Rads to do:
 
-- Live Projects
-- System Design Documents
-- Architectural/System Design Diagrams
-- UX/UI (in case of frontend)
-- Papers
-- Books
-- Blog articles
-- Videos
-- Podcast
-- Summary
+## Sytem Design Document
+You can access the full SDD here: 
+https://github.com/saskaradit/microservice-ts-tixhub/tree/master/system-design-document
+
+ 
