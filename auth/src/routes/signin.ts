@@ -11,10 +11,7 @@ router.post(
   '/api/users/signin',
   [
     // body('email').isEmail().withMessage('Email must be valid'),
-    body('username')
-      .trim()
-      .isLength({ min: 4, max: 20 })
-      .withMessage('Username must be valid'),
+    body('username').trim().notEmpty().withMessage('Username must be valid'),
     body('password').trim().notEmpty().withMessage('You must input a password'),
   ],
   validateRequest,

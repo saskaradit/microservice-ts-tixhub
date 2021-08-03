@@ -9,6 +9,7 @@ router.put('/api/users/edit', currentUser, async (req, res) => {
 
   user!.set({
     email: req.body.email,
+    name: req.body.name,
   })
   await user!.save()
   res.send({ currentUser: user || null })

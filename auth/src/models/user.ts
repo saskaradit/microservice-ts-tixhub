@@ -1,23 +1,25 @@
-import mongoose from 'mongoose';
-import { Password } from '../services/password';
+import mongoose from 'mongoose'
+import { Password } from '../services/password'
 
 // User interface describes the properties
 interface UserProperties {
-  username: string;
-  email: string;
-  password: string;
+  username: string
+  name: string
+  email: string
+  password: string
 }
 
 // UserModel interface describes the properties the User model have
 interface UserModel extends mongoose.Model<UserDoc> {
-  build(properties: UserProperties): UserDoc;
+  build(properties: UserProperties): UserDoc
 }
 
 // interface that describes the properties a singgle User Has
 interface UserDoc extends mongoose.Document {
-  username: string;
-  email: string;
-  password: string;
+  name: string
+  username: string
+  email: string
+  password: string
 }
 
 const userSchema = new mongoose.Schema(
@@ -30,6 +32,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    name: {
+      type: String,
+      required: true,
+    },
     password: {
       type: String,
       required: true,
@@ -38,28 +44,28 @@ const userSchema = new mongoose.Schema(
   {
     toJSON: {
       transform(doc, ret) {
-        ret.id = ret._id;
-        delete ret._id;
-        delete ret.password;
-        delete ret.__v;
+        ret.id = ret._id
+        delete ret._id
+        delete ret.password
+        delete ret.__v
       },
     },
   }
-);
+)
 
 userSchema.pre('save', async function (done) {
   if (this.isModified('password')) {
-    const hashed = await Password.toHash(this.get('password'));
-    this.set('password', hashed);
+    const hashed = await Password.toHash(this.get('password'))
+    this.set('password', hashed)
   }
-  done();
-});
+  done()
+})
 
 userSchema.statics.build = (properties: UserProperties) => {
-  return new User(properties);
-};
+  return new User(properties)
+}
 
-const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
+const User = mongoose.model<UserDoc, UserModel>('User', userSchema)
 
 // User.build({
 //   username: "jengjet",
@@ -67,4 +73,4 @@ const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
 //   password: "jengjet",
 // });
 
-export { User };
+export { User }

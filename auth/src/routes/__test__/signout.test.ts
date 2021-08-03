@@ -1,5 +1,5 @@
-import request from 'supertest';
-import { app } from '../../app';
+import request from 'supertest'
+import { app } from '../../app'
 
 it('clears the cookie after signout', async () => {
   await request(app)
@@ -7,14 +7,15 @@ it('clears the cookie after signout', async () => {
     .send({
       email: 'rad@gmail.com',
       username: 'saskara',
+      name: 'RAD',
       password: 'jengjet',
     })
-    .expect(201);
+    .expect(201)
 
   const response = await request(app)
-    .post('/api/user/signout')
+    .post('/api/users/signout')
     .send({})
-    .expect(200);
+    .expect(200)
 
-  expect(response.get('Set-Cookie')).toBeDefined();
-});
+  expect(response.get('Set-Cookie')).toBeDefined()
+})
