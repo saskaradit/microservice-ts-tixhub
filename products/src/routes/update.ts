@@ -1,14 +1,20 @@
 import express, { Request, Response } from 'express'
 import { body } from 'express-validator'
 import { Product } from '../models/products'
-import { requireAuth, validateRequest } from '@rad-sas/common'
+import {
+  BadRequestError,
+  NotAuthorizedError,
+  requireAuth,
+  RouteError,
+  validateRequest,
+} from '@rad-sas/common'
 import { natsWrapper } from '../nats-wrapper'
-import { ProductCreatedPublisher } from '../events/publishers/product-created-publisher'
+import { ProductUpdatedPublisher } from '../events/publishers/product-updated-publisher'
 
 const router = express.Router()
 
-router.post(
-  '/api/products',
+router.put(
+  '/api/products/:id',
   requireAuth,
   [
     body('title').not().isEmpty().withMessage('Title is required'),
@@ -16,22 +22,31 @@ router.post(
     body('price')
       .isFloat({ gt: 0 })
       .withMessage('Price must be greater than 0'),
-    body('image').not().isEmpty().withMessage('Please input an image link'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { title, price, image, desc } = req.body
+    const { title, price, desc } = req.body
+    const product = await Product.findById(req.params.id)
 
-    const product = Product.build({
+    if (!product) {
+      throw new RouteError()
+    }
+    if (product.orderId) {
+      throw new BadRequestError('Cannot edit a reserved product')
+    }
+
+    if (product.userId !== req.currentUser!.id) {
+      throw new NotAuthorizedError()
+    }
+
+    product.set({
       title,
       price,
-      image,
       desc,
-      userId: req.currentUser!.id,
     })
     await product.save()
 
-    new ProductCreatedPublisher(natsWrapper.client).publish({
+    new ProductUpdatedPublisher(natsWrapper.client).publish({
       id: product.id,
       title: product.title,
       desc: product.desc,
