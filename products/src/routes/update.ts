@@ -59,4 +59,4 @@ router.put(
   }
 )
 
-export { router as createProductRouter }
+export { router as updateProductRouter }
