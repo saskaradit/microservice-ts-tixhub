@@ -1,15 +1,16 @@
 import { TicketUpdatedEvent } from '@rad-sas/common'
 import { Message } from 'node-nats-streaming'
-import { TicketUpdatedSubscriber } from '../ticket-updated-subscriber'
 import { natsWrapper } from '../../../nats-wrapper'
-import { Ticket } from '../../../models/ticket'
+
 import mongoose from 'mongoose'
+import { TicketUpdatedSubscriber } from '../ticket/ticket-updated-subscriber'
+import { Item } from '../../../models/item'
 
 const setup = async () => {
   // create a listener
   const listener = new TicketUpdatedSubscriber(natsWrapper.client)
   // create and save a ticket
-  const ticket = Ticket.build({
+  const ticket = Item.build({
     id: new mongoose.Types.ObjectId().toHexString(),
     title: 'hehe',
     price: 20,
@@ -22,8 +23,7 @@ const setup = async () => {
     version: ticket.version + 1,
     title: 'new hehe',
     price: 999,
-    image:
-      'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
+    schedule: new Date(),
     userId: 'radrad',
   }
   // create a fake msg object
@@ -40,7 +40,7 @@ it('finds,update,and saves a ticket', async () => {
 
   await listener.onMessage(data, msg)
 
-  const updatedTicket = await Ticket.findById(ticket.id)
+  const updatedTicket = await Item.findById(ticket.id)
 
   expect(updatedTicket!.title).toEqual(data.title)
   expect(updatedTicket!.price).toEqual(data.price)

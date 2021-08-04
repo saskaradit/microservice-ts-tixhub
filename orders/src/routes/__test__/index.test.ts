@@ -1,25 +1,25 @@
 import request from 'supertest'
 import { app } from '../../app'
 import { Order } from '../../models/order'
-import { Ticket } from '../../models/ticket'
 import mongoose from 'mongoose'
+import { Item } from '../../models/item'
 
-const buildTicket = async () => {
-  const ticket = Ticket.build({
+const builditem = async () => {
+  const item = Item.build({
     id: mongoose.Types.ObjectId().toHexString(),
     title: 'heh',
     price: 9090,
   })
 
-  await ticket.save()
-  return ticket
+  await item.save()
+  return item
 }
 
 it('fetches orders for a particular user', async () => {
-  // Create three tickets
-  const ticketOne = await buildTicket()
-  const ticketTwo = await buildTicket()
-  const ticketThree = await buildTicket()
+  // Create three items
+  const itemOne = await builditem()
+  const itemTwo = await builditem()
+  const itemThree = await builditem()
 
   const userOne = global.signin()
   const userTwo = global.signin()
@@ -27,17 +27,17 @@ it('fetches orders for a particular user', async () => {
   await request(app)
     .post('/api/orders')
     .set('Cookie', userOne)
-    .send({ ticketId: ticketOne.id })
+    .send({ itemId: itemOne.id })
 
   // Create two order as user #2
   const { body: orderOne } = await request(app)
     .post('/api/orders')
     .set('Cookie', userTwo)
-    .send({ ticketId: ticketTwo.id })
+    .send({ itemId: itemTwo.id })
   const { body: orderTwo } = await request(app)
     .post('/api/orders')
     .set('Cookie', userTwo)
-    .send({ ticketId: ticketThree.id })
+    .send({ itemId: itemThree.id })
 
   // Make request for the user #2
   const response = await request(app)

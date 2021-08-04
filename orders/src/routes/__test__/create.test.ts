@@ -2,29 +2,29 @@ import request from 'supertest'
 import { app } from '../../app'
 import mongoose from 'mongoose'
 import { Order, OrderStatus } from '../../models/order'
-import { Ticket } from '../../models/ticket'
+import { Item } from '../../models/item'
 import { natsWrapper } from '../../nats-wrapper'
 
-it('returns an error if the ticket does not exist', async () => {
-  const ticketId = mongoose.Types.ObjectId()
+it('returns an error if the item does not exist', async () => {
+  const itemId = mongoose.Types.ObjectId()
 
   await request(app)
     .post('/api/orders')
     .set('Cookie', global.signin())
-    .send({ ticketId })
+    .send({ itemId })
     .expect(404)
 })
-it('returns an error if the ticket is already reserved', async () => {
-  const ticket = Ticket.build({
+it('returns an error if the item is already reserved', async () => {
+  const item = Item.build({
     id: mongoose.Types.ObjectId().toHexString(),
     title: 'HEHE',
     price: 9090,
   })
 
-  await ticket.save()
+  await item.save()
 
   const order = Order.build({
-    ticket,
+    item,
     userId: 'hehehe',
     status: OrderStatus.Created,
     expiresAt: new Date(),
@@ -35,36 +35,36 @@ it('returns an error if the ticket is already reserved', async () => {
   await request(app)
     .post('/api/orders')
     .set('Cookie', global.signin())
-    .send({ ticketId: ticket.id })
+    .send({ itemId: item.id })
     .expect(400)
 })
-it('it reserves a tickets', async () => {
-  const ticket = Ticket.build({
+it('it reserves a items', async () => {
+  const item = Item.build({
     id: mongoose.Types.ObjectId().toHexString(),
     title: 'HEHE',
     price: 9090,
   })
-  await ticket.save()
+  await item.save()
 
   await request(app)
     .post('/api/orders')
     .set('Cookie', global.signin())
-    .send({ ticketId: ticket.id })
+    .send({ itemId: item.id })
     .expect(201)
 })
 
 it('emits an order created event', async () => {
-  const ticket = Ticket.build({
+  const item = Item.build({
     id: mongoose.Types.ObjectId().toHexString(),
     title: 'HEHE',
     price: 9090,
   })
-  await ticket.save()
+  await item.save()
 
   await request(app)
     .post('/api/orders')
     .set('Cookie', global.signin())
-    .send({ ticketId: ticket.id })
+    .send({ itemId: item.id })
     .expect(201)
 
   expect(natsWrapper.client.publish).toHaveBeenCalled()

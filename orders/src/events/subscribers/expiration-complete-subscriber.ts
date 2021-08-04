@@ -31,8 +31,8 @@ export class ExpirationCompleteSubscriber extends Listener<ExpirationCompleteEve
     await new OrderCancelledPublisher(this.client).publish({
       id: data.orderId,
       version: order.version,
-      ticket: {
-        id: order.ticket.id,
+      item: {
+        id: order.item.id,
       },
     })
     msg.ack()

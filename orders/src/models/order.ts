@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import { OrderStatus } from '@rad-sas/common'
-import { TicketDoc } from './ticket'
+import { ItemDoc } from './item'
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 
 export { OrderStatus }
@@ -8,14 +8,14 @@ interface OrderAttrs {
   userId: string
   status: OrderStatus
   expiresAt: Date
-  ticket: TicketDoc
+  item: ItemDoc
 }
 
 interface OrderDoc extends mongoose.Document {
   userId: string
   status: OrderStatus
   expiresAt: Date
-  ticket: TicketDoc
+  item: ItemDoc
   version: number
 }
 
@@ -38,9 +38,9 @@ const orderSchema = new mongoose.Schema(
     expiresAt: {
       type: mongoose.Schema.Types.Date,
     },
-    ticket: {
+    item: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Ticket',
+      ref: 'Item',
     },
   },
   {

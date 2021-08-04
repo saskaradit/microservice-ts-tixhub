@@ -1,9 +1,9 @@
 import { TicketCreatedEvent } from '@rad-sas/common'
 import { Message } from 'node-nats-streaming'
 import mongoose from 'mongoose'
-import { TicketCreatedSubscriber } from '../ticket-created-subscriber'
-import { Ticket } from '../../../models/ticket'
+import { Item } from '../../../models/item'
 import { natsWrapper } from '../../../nats-wrapper'
+import { TicketCreatedSubscriber } from '../ticket/ticket-created-subscriber'
 
 const setup = async () => {
   // create an instance of the listener
@@ -14,8 +14,7 @@ const setup = async () => {
     version: 0,
     title: 'hehe',
     price: 200,
-    image:
-      'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
+    schedule: new Date(),
     userId: new mongoose.Types.ObjectId().toHexString(),
   }
   // create a fake message object
@@ -32,9 +31,10 @@ it('creates and saves a ticket', async () => {
   // call the onMessage with data object + message object
   await listener.onMessage(data, msg)
   // write assertion
-  const ticket = await Ticket.findById(data.id)
+  const ticket = await Item.findById(data.id)
 
   expect(ticket).toBeDefined()
+  console.log(data)
   expect(ticket!.title).toEqual(data.title)
 })
 

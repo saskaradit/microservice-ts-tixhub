@@ -7,10 +7,10 @@ import {
   BadRequestError,
 } from '@rad-sas/common'
 import { body } from 'express-validator'
-import { Ticket } from '../models/ticket'
 import { Order } from '../models/order'
 import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher'
 import { natsWrapper } from '../nats-wrapper'
+import { Item } from '../models/item'
 
 const router = express.Router()
 
@@ -19,21 +19,21 @@ const EXPIRATION_WINDOW_SECONDS = 15 * 60
 router.post(
   '/api/orders',
   requireAuth,
-  [body('ticketId').not().isEmpty().withMessage('TickedId must be provided')],
+  [body('itemId').not().isEmpty().withMessage('itemId must be provided')],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { ticketId } = req.body
+    const { itemId } = req.body
 
-    // Find the ticket the user is trying to order in the database
-    const ticket = await Ticket.findById(ticketId)
-    if (!ticket) {
+    // Find the item the user is trying to order in the database
+    const item = await Item.findById(itemId)
+    if (!item) {
       throw new RouteError()
     }
 
-    // Make sure the ticket is not already reserved
-    const isReserved = await ticket.isReserved()
+    // Make sure the item is not already reserved
+    const isReserved = await item.isReserved()
     if (isReserved) {
-      throw new BadRequestError('Ticket is already reserved')
+      throw new BadRequestError('Item is already reserved')
     }
 
     // Calculate an expiration date for the order
@@ -45,7 +45,7 @@ router.post(
       userId: req.currentUser!.id,
       status: OrderStatus.Created,
       expiresAt: expiration,
-      ticket,
+      item,
     })
     await order.save()
 
@@ -56,9 +56,9 @@ router.post(
       userId: order.userId,
       version: order.version,
       expiresAt: order.expiresAt.toISOString(),
-      ticket: {
-        id: ticket.id,
-        price: ticket.price,
+      item: {
+        id: item.id,
+        price: item.price,
       },
     })
     res.status(201).send(order)
