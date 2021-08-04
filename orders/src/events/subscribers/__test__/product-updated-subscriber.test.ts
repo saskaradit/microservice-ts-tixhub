@@ -1,28 +1,27 @@
-import { TicketUpdatedEvent } from '@rad-sas/common'
-import { Message } from 'node-nats-streaming'
+import { Item } from '../../../models/item'
 import { natsWrapper } from '../../../nats-wrapper'
 import mongoose from 'mongoose'
-import { TicketUpdatedSubscriber } from '../ticket/ticket-updated-subscriber'
-import { Item } from '../../../models/item'
+import { ProductUpdatedSubscriber } from '../product/product-updated-subscriber'
+import { ProductUpdatedEvent } from '@rad-sas/common'
 
 const setup = async () => {
   // create a listener
-  const listener = new TicketUpdatedSubscriber(natsWrapper.client)
+  const listener = new ProductUpdatedSubscriber(natsWrapper.client)
   // create and save a ticket
-  const ticket = Item.build({
+  const product = Item.build({
     id: new mongoose.Types.ObjectId().toHexString(),
     title: 'hehe',
     price: 20,
   })
-  await ticket.save()
+  await product.save()
 
   // create a fake data object
-  const data: TicketUpdatedEvent['data'] = {
-    id: ticket.id,
-    version: ticket.version + 1,
+  const data: ProductUpdatedEvent['data'] = {
+    id: product.id,
+    version: product.version + 1,
     title: 'new hehe',
     price: 999,
-    schedule: new Date(),
+    desc: 'jengjet',
     userId: 'radrad',
   }
   // create a fake msg object
@@ -31,18 +30,18 @@ const setup = async () => {
     ack: jest.fn(),
   }
 
-  return { msg, data, ticket, listener }
+  return { msg, data, product, listener }
 }
 
 it('finds,update,and saves a ticket', async () => {
-  const { msg, data, ticket, listener } = await setup()
+  const { msg, data, product, listener } = await setup()
 
   await listener.onMessage(data, msg)
 
-  const updatedTicket = await Item.findById(ticket.id)
+  const updatedProduct = await Item.findById(product.id)
 
-  expect(updatedTicket!.title).toEqual(data.title)
-  expect(updatedTicket!.price).toEqual(data.price)
+  expect(updatedProduct!.title).toEqual(data.title)
+  expect(updatedProduct!.price).toEqual(data.price)
 })
 
 it('acks the message', async () => {
@@ -54,7 +53,7 @@ it('acks the message', async () => {
 })
 
 it('does not call ack if the event has a skipped version number', async () => {
-  const { msg, data, ticket, listener } = await setup()
+  const { msg, data, product, listener } = await setup()
 
   data.version = 10
 
