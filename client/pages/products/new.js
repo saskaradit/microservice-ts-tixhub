@@ -1,28 +1,38 @@
 import { useState } from 'react'
 import useRequest from '../../hooks/use-request'
-import Router from 'next/dist/next-server/server/router'
+import Router from 'next/router'
 
 const NewProduct = () => {
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
   const [price, setPrice] = useState('')
-  const [image, setImage] = useState('')
-  // const { doRequest, errors } = useRequest({
-  //   url: '/api/products',
-  //   method: 'post',
-  //   body: {
-  //     title,
-  //     price,
-  //     desc,
-  //     image,
-  //   },
-  //   onSuccess: () => Router.push('/'),
-  // })
+  const { doRequest, errors } = useRequest({
+    url: '/api/products',
+    method: 'post',
+    body: {
+      title,
+      price,
+      desc,
+    },
+    onSuccess: () => {
+      Router.push('/')
+    },
+  })
 
   const onSubmit = (e) => {
     e.preventDefault()
-    console.log(image)
-    // doRequest()
+    // ================for image ===================
+
+    // const imgInput = document.getElementById('photo')
+    // if (imgInput.files[0]) {
+    //   const fr = new FileReader()
+    //   fr.addEventListener('load', () => {
+    //     image = fr.result
+    //   })
+    //   fr.readAsDataURL(imgInput.files[0])
+    // }
+
+    doRequest()
   }
 
   const onBlur = () => {
@@ -67,16 +77,7 @@ const NewProduct = () => {
             onChange={(e) => setPrice(e.target.value)}
           />
         </div>
-        <div className='form-group'>
-          <label>Image Url</label>
-          <input
-            className='form-control'
-            type='file'
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-          />
-        </div>
-        {/* {errors} */}
+        {errors}
         <button className='btn btn-primary'>Submit</button>
       </form>
     </div>

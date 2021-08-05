@@ -7,10 +7,6 @@ it('implements OCC', async () => {
     price: 200,
     userId: '200',
     desc: 'its album',
-    image: Buffer.from(
-      'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
-      'utf-8'
-    ),
   })
 
   await prod.save()
@@ -42,10 +38,6 @@ it('increments the version on multiple saves', async () => {
     price: 200,
     userId: '200',
     desc: 'its album',
-    image: Buffer.from(
-      'https://images.unsplash.com/photo-1557787163-1635e2efb160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3152&q=80',
-      'utf-8'
-    ),
   })
 
   await product.save()

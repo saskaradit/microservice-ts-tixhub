@@ -16,16 +16,17 @@ router.post(
     body('price')
       .isFloat({ gt: 0 })
       .withMessage('Price must be greater than 0'),
-    body('image').not().isEmpty().withMessage('Please input an image link'),
+    // body('image').not().isEmpty().withMessage('Please upload an image'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { title, price, image, desc } = req.body
+    const { title, price, desc } = req.body
+    // console.log(Buffer.from(image, 'utf-8'))
 
     const product = Product.build({
       title,
       price,
-      image,
+      // image: Buffer.from(image, 'utf-8'),
       desc,
       userId: req.currentUser!.id,
     })

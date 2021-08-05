@@ -4,7 +4,7 @@ import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 interface ProductAttrs {
   title: string
   price: number
-  image: Buffer
+  // image: Buffer
   desc: string
   userId: string
 }
@@ -12,7 +12,7 @@ interface ProductAttrs {
 interface ProductDoc extends mongoose.Document {
   title: string
   price: number
-  image: Buffer
+  image?: Buffer
   desc: string
   userId: string
   version: number
