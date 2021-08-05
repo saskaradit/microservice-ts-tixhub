@@ -21,6 +21,10 @@ React for the front  and Node for the back deployed on a kubernetes  clusters
 3. Run the command `skaffold dev`
 
 
+##  Troubleshoot
+if you happen have a problem with certificates, type `thisisunsafe` in the tab, on in the console
+
+
 ## Sytem Design Document
 You can access the full SDD here: 
 https://github.com/saskaradit/microservice-ts-tixhub/tree/master/system-design-document
